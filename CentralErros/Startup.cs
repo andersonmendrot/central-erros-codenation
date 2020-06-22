@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CentralErros.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using CentralErros.Models;
 
-namespace CentralErros
+namespace CourseLibrary.API
 {
     public class Startup
     {
@@ -27,10 +20,13 @@ namespace CentralErros
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=CentralErrosDB;Trusted_Connection=True;";
-            services.AddDbContext<CentralErrosContext>(options => options.UseSqlServer(connection));
-
             services.AddControllers();
+
+            services.AddDbContext<CentralErrosContext>(options =>
+            {
+                options.UseSqlServer(
+                    @"Server = (localdb)\mssqllocaldb; Database = CentralErrosDB; Trusted_Connection = True;");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,8 +36,6 @@ namespace CentralErros
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -54,3 +48,5 @@ namespace CentralErros
         }
     }
 }
+
+
