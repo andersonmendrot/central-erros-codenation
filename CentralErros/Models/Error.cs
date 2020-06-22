@@ -57,5 +57,12 @@ namespace CentralErros.Models
 
         [ForeignKey("LevelId")]
         public virtual Level Level { get; set; }
+
+        [Column("language_id")]
+        [Required]
+        public int LanguageId { get; set; }
+
+        [ForeignKey("LanguageId")]
+        public virtual Language Language { get; set; }
     }
 }
