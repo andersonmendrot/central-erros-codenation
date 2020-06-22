@@ -34,6 +34,19 @@ namespace CentralErros.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "language",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_language", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "level",
                 columns: table => new
                 {
@@ -75,7 +88,8 @@ namespace CentralErros.Migrations
                     origin = table.Column<string>(maxLength: 200, nullable: false),
                     status = table.Column<string>(nullable: false),
                     number_events = table.Column<int>(nullable: false),
-                    timestamp = table.Column<byte[]>(nullable: false)
+                    timestamp = table.Column<byte[]>(nullable: false),
+                    language_id = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,6 +105,12 @@ namespace CentralErros.Migrations
                         name: "FK_error_environment_environment_id",
                         column: x => x.environment_id,
                         principalTable: "environment",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_error_language_language_id",
+                        column: x => x.language_id,
+                        principalTable: "language",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -110,6 +130,11 @@ namespace CentralErros.Migrations
                 name: "IX_error_environment_id",
                 table: "error",
                 column: "environment_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_error_language_id",
+                table: "error",
+                column: "language_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -125,6 +150,9 @@ namespace CentralErros.Migrations
 
             migrationBuilder.DropTable(
                 name: "environment");
+
+            migrationBuilder.DropTable(
+                name: "language");
 
             migrationBuilder.DropTable(
                 name: "level");

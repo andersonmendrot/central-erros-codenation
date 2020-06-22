@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentralErros.Migrations
 {
     [DbContext(typeof(CentralErrosContext))]
-    [Migration("20200621231011_InitialCreate")]
+    [Migration("20200622150501_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,10 @@ namespace CentralErros.Migrations
                         .HasColumnName("id")
                         .HasColumnType("int");
 
+                    b.Property<int>("LanguageId")
+                        .HasColumnName("language_id")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumberEvents")
                         .HasColumnName("number_events")
                         .HasColumnType("int");
@@ -113,9 +117,30 @@ namespace CentralErros.Migrations
 
                     b.HasIndex("EnvironmentId");
 
+                    b.HasIndex("LanguageId");
+
                     b.ToTable("error");
 
                     b.HasCheckConstraint("constraint_status", "status = 'y' or status = 'n'");
+                });
+
+            modelBuilder.Entity("CentralErros.Models.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnName("name")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("language");
                 });
 
             modelBuilder.Entity("CentralErros.Models.Level", b =>
@@ -183,6 +208,12 @@ namespace CentralErros.Migrations
                     b.HasOne("CentralErros.Models.Environment", "Environment")
                         .WithMany()
                         .HasForeignKey("EnvironmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CentralErros.Models.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
