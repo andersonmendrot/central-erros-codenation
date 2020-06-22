@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using CentralErros.Models;
 
 namespace CentralErros
 {
@@ -25,6 +27,9 @@ namespace CentralErros
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=CentralErrosDB;Trusted_Connection=True;";
+            services.AddDbContext<CentralErrosContext>(options => options.UseSqlServer(connection));
+
             services.AddControllers();
         }
 
