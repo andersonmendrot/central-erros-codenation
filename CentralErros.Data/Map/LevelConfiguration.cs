@@ -8,7 +8,17 @@ namespace CentralErros.Data.Map
     {
         public void Configure(EntityTypeBuilder<Level> builder)
         {
-            
+            builder.ToTable("Level");
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Name)
+                .HasColumnType("varchar(100)")
+                .IsRequired();
+
+            builder.HasMany(e => e.Errors)
+                .WithOne(l => l.Level)
+                .HasForeignKey(l => l.LevelId);
         }
     }
 }

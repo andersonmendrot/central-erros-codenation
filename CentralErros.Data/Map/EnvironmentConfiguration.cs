@@ -8,7 +8,17 @@ namespace CentralErros.Data.Map
     {
         public void Configure(EntityTypeBuilder<Environment> builder)
         {
-           
+            builder.ToTable("Environment");
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Name)
+                .HasColumnType("varchar(100)")
+                .IsRequired();
+
+            builder.HasMany(e => e.Errors)
+                .WithOne(en => en.Environment)
+                .HasForeignKey(en => en.EnvironmentId);
         }
     }
 }

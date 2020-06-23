@@ -10,6 +10,7 @@ namespace CentralErros.Data
         public DbSet<ApplicationLayer> ApplicationLayers { get; set; }
         public DbSet<Environment> Environments { get; set; }
         public DbSet<Error> Errors { get; set; }
+        public DbSet<Language> Languages { get; set; }
         public DbSet<Level> Levels { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -26,12 +27,20 @@ namespace CentralErros.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-                optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Codenation;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=CentralErros;Trusted_Connection=True");
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ApplicationLayerConfiguration());
+            modelBuilder.ApplyConfiguration(new EnvironmentConfuguration());
             modelBuilder.ApplyConfiguration(new ErrorConfiguration());
+            modelBuilder.ApplyConfiguration(new LanguageConfiguration());
+            modelBuilder.ApplyConfiguration(new LevelConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
