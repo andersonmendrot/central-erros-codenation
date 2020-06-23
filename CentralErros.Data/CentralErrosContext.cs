@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using CentralErros.Domain;
+using Environment = CentralErros.Domain.Environment;
+using CentralErros.Data.Map;
 
-namespace CentralErros.Models
+namespace CentralErros.Data
 {
     public class CentralErrosContext : DbContext
     {
