@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using CentralErros.Domain;
+using CentralErros.Domain.Models;
 
-namespace CentralErros.Data.Map
+namespace CentralErros.Infrastructure.Mappings
 {
     public class ErrorConfiguration : IEntityTypeConfiguration<Error>
     {

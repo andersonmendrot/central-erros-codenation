@@ -3,13 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralErros.API", "CentralErros.API\CentralErros.API.csproj", "{E852C043-179D-4248-85E8-4545CE1DC0ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CentralErros.API", "CentralErros.API\CentralErros.API.csproj", "{E852C043-179D-4248-85E8-4545CE1DC0ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F332733-E7FC-478A-A904-17E78E8674D6} = {6F332733-E7FC-478A-A904-17E78E8674D6}
+		{54036343-44B0-4DE9-94FA-591076919117} = {54036343-44B0-4DE9-94FA-591076919117}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralErros.Domain", "CentralErros.Domain\CentralErros.Domain.csproj", "{6F332733-E7FC-478A-A904-17E78E8674D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CentralErros.Domain", "CentralErros.Domain\CentralErros.Domain.csproj", "{6F332733-E7FC-478A-A904-17E78E8674D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralErros.Infrastructure", "CentralErros.Infrastructure\CentralErros.Infrastructure.csproj", "{54036343-44B0-4DE9-94FA-591076919117}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CentralErros.Infrastructure", "CentralErros.Infrastructure\CentralErros.Infrastructure.csproj", "{54036343-44B0-4DE9-94FA-591076919117}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F332733-E7FC-478A-A904-17E78E8674D6} = {6F332733-E7FC-478A-A904-17E78E8674D6}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CentralErros.Test", "CentralErros.Test\CentralErros.Test.csproj", "{B2B48EE3-593D-4EA0-911D-F383E90CC38C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CentralErros.Test", "CentralErros.Test\CentralErros.Test.csproj", "{B2B48EE3-593D-4EA0-911D-F383E90CC38C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

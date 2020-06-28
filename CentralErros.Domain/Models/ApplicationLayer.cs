@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CentralErros.Domain
+namespace CentralErros.Domain.Models
 {
     public class ApplicationLayer
     {

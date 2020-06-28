@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CentralErros.Data.Migrations
+namespace CentralErros.Infrastructure.Migrations
 {
     public partial class InitialCreate : Migration
     {
