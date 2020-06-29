@@ -4,7 +4,7 @@ using CentralErros.Domain.Models;
 
 namespace CentralErros.Infrastructure.Mappings
 {
-    public class EnvironmentConfuguration : IEntityTypeConfiguration<Environment>
+    public class EnvironmentConfiguration : IEntityTypeConfiguration<Environment>
     {
         public void Configure(EntityTypeBuilder<Environment> builder)
         {
