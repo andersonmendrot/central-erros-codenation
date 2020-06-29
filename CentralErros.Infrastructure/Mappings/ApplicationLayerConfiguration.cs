@@ -16,7 +16,7 @@ namespace CentralErros.Infrastructure.Mappings
                 .HasColumnType("varchar(100)")
                 .IsRequired();
 
-            builder.HasMany<Error>(e => e.Errors)
+            builder.HasMany(e => e.Errors)
                 .WithOne(a => a.ApplicationLayer)
                 .HasForeignKey(a => a.ApplicationLayerId);  
         }

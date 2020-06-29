@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentralErros.Infrastructure.Migrations
 {
     [DbContext(typeof(CentralErrosContext))]
-    [Migration("20200628164549_InitialCreate")]
+    [Migration("20200628202909_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

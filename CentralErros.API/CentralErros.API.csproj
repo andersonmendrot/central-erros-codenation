@@ -8,5 +8,9 @@
     <ProjectReference Include="..\CentralErros.Infrastructure\CentralErros.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 
 </Project>
