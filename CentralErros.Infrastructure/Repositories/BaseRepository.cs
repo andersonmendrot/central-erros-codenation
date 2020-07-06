@@ -14,7 +14,19 @@ namespace CentralErros.Infrastructure.Repositories
         }
         public void Save(T entity)
         {
-            
+            var existingEntity = _context.Set<T>().Find(entity.Id);
+
+            if(existingEntity != null)
+            {
+                throw new ArgumentException("Item já existente");
+            }
+
+            else
+            {
+                _context.Set<T>().Add(entity);
+            }
+
+            _context.SaveChanges();
         }
 
         public List<T> GetAll()
