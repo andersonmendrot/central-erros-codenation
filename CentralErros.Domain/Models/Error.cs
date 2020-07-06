@@ -1,8 +1,9 @@
 ﻿using System;
+using CentralErros.Domain.Repositories;
 
 namespace CentralErros.Domain.Models
 {
-    public class Error
+    public class Error : IEntity
     {
         public int Id { get; set; }
         public string Title { get; set; }

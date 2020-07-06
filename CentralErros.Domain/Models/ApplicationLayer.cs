@@ -2,7 +2,7 @@
 
 namespace CentralErros.Domain.Models
 {
-    public class ApplicationLayer
+    public class ApplicationLayer : Repositories.IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
