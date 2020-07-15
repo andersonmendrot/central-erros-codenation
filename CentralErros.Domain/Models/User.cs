@@ -9,6 +9,6 @@ namespace CentralErros.Domain.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public Byte[] Timestamp { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
