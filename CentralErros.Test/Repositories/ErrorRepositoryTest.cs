@@ -269,14 +269,19 @@ namespace CentralErros.Test.Repositories
         public void ShouldRemove()
         {
             var fakeContext = new FakeContext("ShouldRemove");
+            fakeContext.FillWith<Error>();
             var data = fakeContext.GetFakeData<Error>().First();
 
             using (var context = new CentralErrosContext(fakeContext.FakeOptions)) 
             {
+                var expected = fakeContext.GetFakeData<Error>().Count() - 1;
+
                 var service = new ErrorRepository(context);
                 service.Remove(data);
 
-                Assert.Equal(0, context.Errors.Count());
+                var actual = context.Errors.Count();
+
+                Assert.Equal(expected, actual);
             }
         }
 
