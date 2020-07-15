@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="JUnitTestLogger" Version="1.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.14.4" />
@@ -17,7 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestData\" />
+    <Folder Include="FakeData\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CentralErros.Domain\CentralErros.Domain.csproj" />
+    <ProjectReference Include="..\CentralErros.Infrastructure\CentralErros.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
