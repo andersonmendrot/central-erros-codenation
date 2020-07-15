@@ -1,0 +1,5 @@
+[{"id":1,"Name":"Error"},
+{"id":2,"Name":"Warning"},
+{"id":4,"Name":"Info"},
+{"id":3,"Name":"Debug"},
+{"id":5,"Name":"Trace"}]
