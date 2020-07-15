@@ -27,7 +27,6 @@ namespace CentralErros.Infrastructure.Repositories
         {
             return _context.Errors.
                 Where(x => x.ApplicationLayerId == applicationLayerId).
-                Select(x => x).
                 ToList();
         }
 
@@ -35,7 +34,13 @@ namespace CentralErros.Infrastructure.Repositories
         { 
             return _context.Errors.
                 Where(x => x.EnvironmentId == environmentId).
-                Select(x => x).
+                ToList();
+        }
+
+        public List<Error> FindByLanguageId(int languageId)
+        {
+            return _context.Errors.
+                Where(x => x.LanguageId == languageId).
                 ToList();
         }
 
@@ -43,7 +48,6 @@ namespace CentralErros.Infrastructure.Repositories
         {
             return _context.Errors.
                 Where(x => x.LevelId == levelId).
-                Select(x => x).
                 ToList();
         }
 
@@ -51,7 +55,6 @@ namespace CentralErros.Infrastructure.Repositories
         {
             return _context.Errors.
                 Where(x => x.Status == status).
-                Select(x => x).
                 ToList();
         }
 
@@ -65,39 +68,34 @@ namespace CentralErros.Infrastructure.Repositories
             return _context.Errors.SingleOrDefault(x => x.Id == id);
         }
 
-        public List<Error> OrderByApplicationLayer()
+        public List<Error> OrderByLevel(string sortdir)
         {
-            return _context.Errors.
-                OrderBy(x => x.ApplicationLayerId).
-                ToList();
+            if (sortdir == "descending")
+            {
+                return _context.Errors.OrderByDescending(x => x.LevelId).ToList();
+            }
+
+            return _context.Errors.OrderBy(x => x.LevelId).ToList();
         }
 
-        public List<Error> OrderByEnvironment()
+        public List<Error> OrderByQuantity(string sortdir)
         {
-            return _context.Errors.
-                OrderBy(x => x.EnvironmentId).
-                ToList();
+            if (sortdir == "descending")
+            {
+                return _context.Errors.OrderByDescending(x => x.NumberEvents).ToList();
+            }
+
+            return _context.Errors.OrderBy(x => x.NumberEvents).ToList();
         }
 
-        public List<Error> OrderByLevel()
+        public List<Error> OrderByStatus(string sortdir)
         {
-            return _context.Errors.
-                OrderBy(x => x.LevelId).
-                ToList();
-        }
+            if (sortdir == "descending")
+            {
+                return _context.Errors.OrderByDescending(x => x.Status).ToList();
+            }
 
-        public List<Error> OrderByQuantity()
-        {
-            return _context.Errors.
-                OrderBy(x => x.NumberEvents).
-                ToList();
-        }
-
-        public List<Error> OrderByStatus()
-        {
-            return _context.Errors.
-                OrderBy(x => x.Status).
-                ToList();
+            return _context.Errors.OrderBy(x => x.Status).ToList();
         }
 
         public void Remove(Error error)
@@ -115,8 +113,18 @@ namespace CentralErros.Infrastructure.Repositories
 
         public void Update(Error error)
         {
-            _context.Errors.Update(error);
-            _context.SaveChanges();
+            var entity = _context.Errors.Find(error.Id);
+
+            if(entity != null)
+            {
+                var attachedEntry = _context.Entry(entity);
+                attachedEntry.CurrentValues.SetValues(error);
+            }
+        }
+
+        public List<Error> LimitResultNumber(List<Error> errors, int limit)
+        {
+            return errors.Take(limit).ToList();
         }
     }
 }
