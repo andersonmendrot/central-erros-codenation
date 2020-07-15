@@ -23,41 +23,26 @@ namespace CentralErros.Infrastructure.Repositories
             _context.SaveChanges();
         }
 
-        public List<Error> FindByApplicationLayer(string applicationLayerName)
+        public List<Error> FindByApplicationLayerId(int applicationLayerId)
         {
-            var applicationLayerId = _context.ApplicationLayers.
-                Where(x => x.Name == applicationLayerName).
-                Select(x => x.Id).
-                FirstOrDefault();
-
             return _context.Errors.
                 Where(x => x.ApplicationLayerId == applicationLayerId).
                 Select(x => x).
                 ToList();
         }
 
-        public List<Error> FindByEnvironment(string environmentName)
+        public List<Error> FindByEnvironmentId(int environmentId)
         { 
-            var environmentNameId = _context.Environments.
-                Where(x => x.Name == environmentName).
-                Select(x => x.Id).
-                FirstOrDefault();
-
             return _context.Errors.
-                Where(x => x.EnvironmentId == environmentNameId).
+                Where(x => x.EnvironmentId == environmentId).
                 Select(x => x).
                 ToList();
         }
 
-        public List<Error> FindByLevel(string levelName)
+        public List<Error> FindByLevelId(int levelId)
         {
-            var levelNameId = _context.Levels.
-                Where(x => x.Name == levelName).
-                Select(x => x.Id).
-                FirstOrDefault();
-
             return _context.Errors.
-                Where(x => x.LevelId == levelNameId).
+                Where(x => x.LevelId == levelId).
                 Select(x => x).
                 ToList();
         }
