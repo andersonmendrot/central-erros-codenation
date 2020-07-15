@@ -1,9 +1,5 @@
 ﻿using CentralErros.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-
 namespace CentralErros.Test.Comparers
 {
     class ApplicationLayerComparer : IEqualityComparer<ApplicationLayer>

@@ -1,8 +1,4 @@
-﻿using CentralErros.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Collections.Generic;
 using Environment = CentralErros.Domain.Models.Environment;
 
 namespace CentralErros.Test.Comparers
