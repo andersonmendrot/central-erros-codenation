@@ -10,9 +10,9 @@ namespace CentralErros.Domain.Repositories
         public List<Error> OrderByEnvironment();
         public List<Error> OrderByApplicationLayer();
         public List<Error> OrderByStatus();
-        public List<Error> FindByLevel(string levelName);
-        public List<Error> FindByEnvironment(string environmentName);
-        public List<Error> FindByApplicationLayer(string applicationLayerName);
+        public List<Error> FindByLevelId(int levelId);
+        public List<Error> FindByEnvironmentId(int environmentId);
+        public List<Error> FindByApplicationLayerId(int applicationLayerId);
         public List<Error> FindByStatus(char status);
 
         public void Save(Error error);
