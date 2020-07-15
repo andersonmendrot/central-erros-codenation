@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CentralErros.Domain.Repositories;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace CentralErros.Infrastructure.Repositories
 {
@@ -14,18 +15,7 @@ namespace CentralErros.Infrastructure.Repositories
         }
         public void Save(T entity)
         {
-            var existingEntity = _context.Set<T>().Find(entity.Id);
-
-            if(existingEntity != null)
-            {
-                throw new ArgumentException("Item já existente");
-            }
-
-            else
-            {
-                _context.Set<T>().Add(entity);
-            }
-
+            _context.Set<T>().Add(entity);
             _context.SaveChanges();
         }
 
@@ -36,7 +26,7 @@ namespace CentralErros.Infrastructure.Repositories
 
         public void Remove(int id)
         {
-            var entity = _context.Set<T>().FirstOrDefault(x => x.Id == id);
+            var entity = _context.Set<T>().Single(x => x.Id == id);
             _context.Set<T>().Remove(entity);
             _context.SaveChanges();
         }
