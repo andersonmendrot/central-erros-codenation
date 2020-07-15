@@ -24,7 +24,12 @@ namespace CentralErros.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            //services.AddDbContext<CentralErrosContext>();
+
+            var connectionString = Configuration.GetConnectionString("CentralErrosConnection");
+
             services.AddDbContext<CentralErrosContext>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
