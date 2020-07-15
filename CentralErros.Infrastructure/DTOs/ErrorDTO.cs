@@ -12,7 +12,7 @@ namespace CentralErros.Infrastructure.DTOs
         public string Origin { get; set; }
         public char Status { get; set; }
         public int NumberEvents { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime CreatedAt { get; set; }
         public int ApplicationLayerId { get; set; }
         public int EnvironmentId { get; set; }
         public int LanguageId { get; set; }
