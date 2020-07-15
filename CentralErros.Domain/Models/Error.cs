@@ -11,7 +11,7 @@ namespace CentralErros.Domain.Models
         public string Origin { get; set; }
         public char Status { get; set; }
         public int NumberEvents { get; set; }
-        public Byte[] Timestamp { get; set; }
+        public DateTime CreatedAt { get; set; }
         public int ApplicationLayerId { get; set; }
         public int EnvironmentId { get; set; }
         public int LanguageId { get; set; }
