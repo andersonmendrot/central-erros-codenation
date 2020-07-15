@@ -32,8 +32,9 @@ namespace CentralErros.Infrastructure.Mappings
                 .HasColumnType("int")
                 .IsRequired();
 
-            builder.Property(x => x.Timestamp)
-                .HasColumnType("timestamp")
+            builder.Property(x => x.CreatedAt)
+                .HasColumnName("CreatedAt")
+                .HasColumnType("datetime")
                 .IsRequired();
 
             builder.HasCheckConstraint(

@@ -24,7 +24,7 @@ namespace CentralErros.Infrastructure.Mappings
                 .HasColumnType("varchar(15)")
                 .IsRequired();
 
-            builder.Property(x => x.Timestamp)
+            builder.Property(x => x.CreatedAt)
                 .HasColumnName("CreatedAt")
                 .HasColumnType("timestamp")
                 .IsRequired();
