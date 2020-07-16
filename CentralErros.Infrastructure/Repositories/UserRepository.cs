@@ -13,17 +13,8 @@ namespace CentralErros.Infrastructure.Repositories
         }
         public void Save(User user)
         {
-            var existingUser = _context.Users.Find(user.Id);
-
-            if(existingUser != null)
-            {
-                throw new ArgumentException("Usuário já existente");
-            }
-            else
-            {
-                _context.Users.Add(user);
-                _context.SaveChanges();
-            }
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
     }
 }
