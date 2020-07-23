@@ -157,7 +157,7 @@ namespace CentralErros.Test.Repositories
         [InlineData("ascending")]
         [InlineData("descending")]
         [InlineData("")]
-        public void ShouldOrderByLevel(string sortdir)
+        public void ShouldOrderByLevel(string orderDirection)
         {
             var fakeContext = new FakeContext("OrderByLevel");
             fakeContext.FillWith<Error>();
@@ -165,10 +165,10 @@ namespace CentralErros.Test.Repositories
             using (var context = new CentralErrosContext(fakeContext.FakeOptions))
             {
                 var service = new ErrorRepository(context);
-                var actual = service.OrderByLevel(sortdir).ToList();
+                var actual = service.OrderByLevel(service.GetAll(), orderDirection).ToList();
                 var expected = new List<Error>();
 
-                if (sortdir == "descending")
+                if (orderDirection == "descending")
                 {
                     expected = fakeContext.GetFakeData<Error>().OrderByDescending(x => x.LevelId).ToList();
                     Assert.Equal(expected, actual, new ErrorIdComparer());
@@ -183,10 +183,10 @@ namespace CentralErros.Test.Repositories
         }
 
         [Theory]
-        [InlineData("ascending")]
-        [InlineData("descending")]
+        [InlineData("Ascending")]
+        [InlineData("Descending")]
         [InlineData("")]
-        public void ShouldOrderByQuantity(string sortdir)
+        public void ShouldOrderByQuantity(string orderDirection)
         {
             var fakeContext = new FakeContext("OrderByQuantity");
             fakeContext.FillWith<Error>();
@@ -194,10 +194,10 @@ namespace CentralErros.Test.Repositories
             using (var context = new CentralErrosContext(fakeContext.FakeOptions))
             {
                 var service = new ErrorRepository(context);
-                var actual = service.OrderByQuantity(sortdir).ToList();
+                var actual = service.OrderByQuantity(service.GetAll(),orderDirection).ToList();
                 var expected = new List<Error>();
 
-                if (sortdir == "descending")
+                if (orderDirection == "Descending")
                 {
                     expected = fakeContext.GetFakeData<Error>().OrderByDescending(x => x.NumberEvents).ToList();
                     Assert.Equal(expected, actual, new ErrorIdComparer());
