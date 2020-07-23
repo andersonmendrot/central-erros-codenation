@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using CentralErros.Infrastructure.Mappings;
 using CentralErros.Domain.Models;
-using System.Configuration;
 
 namespace CentralErros.Infrastructure
 {
@@ -27,7 +26,7 @@ namespace CentralErros.Infrastructure
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-                optionsBuilder.UseSqlServer(@"Server = (localdb)\\MSSQLLocalDB; Database = CentralErros; Trusted_Connection = True");
+                optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=CentralErros;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
