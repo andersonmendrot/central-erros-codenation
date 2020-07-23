@@ -4,11 +4,15 @@ using CentralErros.Domain.Repositories;
 
 namespace CentralErros.Infrastructure.Repositories
 {
-    public class ApplicationLayerRepository : BaseRepository<ApplicationLayer>
+    public class ApplicationLayerRepository : BaseRepository<ApplicationLayer>, IApplicationLayerRepository
     {
         public ApplicationLayerRepository(CentralErrosContext context) : base(context)
         {
         }
 
+        public bool HasErrorWithoutApplicationLayerId(int id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
