@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using CentralErros.Domain.Models;
 using CentralErros.Infrastructure.DTOs;
 using Environment = CentralErros.Domain.Models.Environment;
@@ -18,6 +15,8 @@ namespace CentralErros.Infrastructure
             CreateMap<Language, LanguageDTO>().ReverseMap();
             CreateMap<Level, LevelDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
+
+            CreateMap<Level, LevelForDeleteDTO>().ReverseMap();
         }
     }
 }
