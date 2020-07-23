@@ -8,7 +8,7 @@ namespace CentralErros.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<Language> builder)
         {
-            builder.ToTable("Language");
+            builder.ToTable("Languages");
 
             builder.HasKey(x => x.Id);
 

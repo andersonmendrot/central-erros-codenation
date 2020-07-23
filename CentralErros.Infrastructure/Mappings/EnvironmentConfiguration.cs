@@ -8,7 +8,7 @@ namespace CentralErros.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<Environment> builder)
         {
-            builder.ToTable("Environment");
+            builder.ToTable("Environments");
 
             builder.HasKey(x => x.Id);
 

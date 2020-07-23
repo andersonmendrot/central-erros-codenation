@@ -8,7 +8,7 @@ namespace CentralErros.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<Error> builder)
         {
-            builder.ToTable("Error");
+            builder.ToTable("Errors");
 
             builder.HasKey(x => x.Id);
 
@@ -26,6 +26,7 @@ namespace CentralErros.Infrastructure.Mappings
 
             builder.Property(x => x.Status)
                 .HasColumnType("char")
+                .HasMaxLength(1)
                 .IsRequired();
 
             builder.Property(x => x.NumberEvents)

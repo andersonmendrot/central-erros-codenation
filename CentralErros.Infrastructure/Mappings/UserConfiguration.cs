@@ -8,7 +8,7 @@ namespace CentralErros.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("User");
+            builder.ToTable("Users");
 
             builder.HasKey(x => x.Id);
 
@@ -26,7 +26,7 @@ namespace CentralErros.Infrastructure.Mappings
 
             builder.Property(x => x.CreatedAt)
                 .HasColumnName("CreatedAt")
-                .HasColumnType("timestamp")
+                .HasColumnType("datetime")
                 .IsRequired();
         }
     }

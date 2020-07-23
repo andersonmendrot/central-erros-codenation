@@ -8,7 +8,7 @@ namespace CentralErros.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ApplicationLayer",
+                name: "ApplicationLayers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -17,11 +17,11 @@ namespace CentralErros.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationLayer", x => x.Id);
+                    table.PrimaryKey("PK_ApplicationLayers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Environment",
+                name: "Environments",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -30,11 +30,11 @@ namespace CentralErros.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Environment", x => x.Id);
+                    table.PrimaryKey("PK_Environments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Language",
+                name: "Languages",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -43,11 +43,11 @@ namespace CentralErros.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Language", x => x.Id);
+                    table.PrimaryKey("PK_Languages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Level",
+                name: "Levels",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -56,11 +56,11 @@ namespace CentralErros.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Level", x => x.Id);
+                    table.PrimaryKey("PK_Levels", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -68,15 +68,15 @@ namespace CentralErros.Infrastructure.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "varchar(254)", nullable: false),
                     Password = table.Column<string>(type: "varchar(15)", nullable: false),
-                    CreatedAt = table.Column<byte[]>(type: "timestamp", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Error",
+                name: "Errors",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -84,7 +84,7 @@ namespace CentralErros.Infrastructure.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Details = table.Column<string>(type: "text", nullable: false),
                     Origin = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Status = table.Column<string>(type: "char", nullable: false),
+                    Status = table.Column<string>(type: "char", maxLength: 1, nullable: false),
                     NumberEvents = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ApplicationLayerId = table.Column<int>(nullable: false),
@@ -94,74 +94,74 @@ namespace CentralErros.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Error", x => x.Id);
+                    table.PrimaryKey("PK_Errors", x => x.Id);
                     table.CheckConstraint("constraint_status", "Status = 'y' or Status = 'n'");
                     table.ForeignKey(
-                        name: "FK_Error_ApplicationLayer_ApplicationLayerId",
+                        name: "FK_Errors_ApplicationLayers_ApplicationLayerId",
                         column: x => x.ApplicationLayerId,
-                        principalTable: "ApplicationLayer",
+                        principalTable: "ApplicationLayers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Error_Environment_EnvironmentId",
+                        name: "FK_Errors_Environments_EnvironmentId",
                         column: x => x.EnvironmentId,
-                        principalTable: "Environment",
+                        principalTable: "Environments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Error_Language_LanguageId",
+                        name: "FK_Errors_Languages_LanguageId",
                         column: x => x.LanguageId,
-                        principalTable: "Language",
+                        principalTable: "Languages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Error_Level_LevelId",
+                        name: "FK_Errors_Levels_LevelId",
                         column: x => x.LevelId,
-                        principalTable: "Level",
+                        principalTable: "Levels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Error_ApplicationLayerId",
-                table: "Error",
+                name: "IX_Errors_ApplicationLayerId",
+                table: "Errors",
                 column: "ApplicationLayerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Error_EnvironmentId",
-                table: "Error",
+                name: "IX_Errors_EnvironmentId",
+                table: "Errors",
                 column: "EnvironmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Error_LanguageId",
-                table: "Error",
+                name: "IX_Errors_LanguageId",
+                table: "Errors",
                 column: "LanguageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Error_LevelId",
-                table: "Error",
+                name: "IX_Errors_LevelId",
+                table: "Errors",
                 column: "LevelId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Error");
+                name: "Errors");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "ApplicationLayer");
+                name: "ApplicationLayers");
 
             migrationBuilder.DropTable(
-                name: "Environment");
+                name: "Environments");
 
             migrationBuilder.DropTable(
-                name: "Language");
+                name: "Languages");
 
             migrationBuilder.DropTable(
-                name: "Level");
+                name: "Levels");
         }
     }
 }

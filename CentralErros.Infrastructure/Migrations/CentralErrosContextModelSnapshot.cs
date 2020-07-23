@@ -32,7 +32,7 @@ namespace CentralErros.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationLayer");
+                    b.ToTable("ApplicationLayers");
                 });
 
             modelBuilder.Entity("CentralErros.Domain.Models.Environment", b =>
@@ -48,7 +48,7 @@ namespace CentralErros.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Environment");
+                    b.ToTable("Environments");
                 });
 
             modelBuilder.Entity("CentralErros.Domain.Models.Error", b =>
@@ -87,7 +87,8 @@ namespace CentralErros.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("char");
+                        .HasColumnType("char")
+                        .HasMaxLength(1);
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -103,7 +104,7 @@ namespace CentralErros.Infrastructure.Migrations
 
                     b.HasIndex("LevelId");
 
-                    b.ToTable("Error");
+                    b.ToTable("Errors");
 
                     b.HasCheckConstraint("constraint_status", "Status = 'y' or Status = 'n'");
                 });
@@ -121,7 +122,7 @@ namespace CentralErros.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Language");
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("CentralErros.Domain.Models.Level", b =>
@@ -137,7 +138,7 @@ namespace CentralErros.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Level");
+                    b.ToTable("Levels");
                 });
 
             modelBuilder.Entity("CentralErros.Domain.Models.User", b =>
@@ -147,10 +148,9 @@ namespace CentralErros.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte[]>("CreatedAt")
-                        .IsRequired()
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnName("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -166,7 +166,7 @@ namespace CentralErros.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CentralErros.Domain.Models.Error", b =>

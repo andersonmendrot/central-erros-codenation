@@ -8,7 +8,7 @@ namespace CentralErros.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ApplicationLayer> builder)
         {
-            builder.ToTable("ApplicationLayer");
+            builder.ToTable("ApplicationLayers");
 
             builder.HasKey(x => x.Id);
 
