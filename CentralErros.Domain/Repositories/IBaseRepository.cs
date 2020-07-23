@@ -6,7 +6,8 @@ namespace CentralErros.Domain.Repositories
     public interface IBaseRepository<T> : IDisposable where T: class, IEntity
     {
         void Save(T entity);
-        List<T> GetAll();
-        void Remove(int id);
+        IList<T> GetAll();
+        T Remove(int id);
+        T GetById(int id);
     }
 }

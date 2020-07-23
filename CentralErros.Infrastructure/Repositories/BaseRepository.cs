@@ -16,19 +16,25 @@ namespace CentralErros.Infrastructure.Repositories
         public void Save(T entity)
         {
             _context.Set<T>().Add(entity);
-            _context.SaveChanges();
+            _context.SaveChanges();        
         }
 
-        public List<T> GetAll()
+        public IList<T> GetAll()
         {
             return _context.Set<T>().ToList();
         }
 
-        public void Remove(int id)
+        public T GetById(int id)
+        {
+            return _context.Set<T>().SingleOrDefault(x => x.Id == id);
+        }
+
+        public T Remove(int id)
         {
             var entity = _context.Set<T>().Single(x => x.Id == id);
             _context.Set<T>().Remove(entity);
             _context.SaveChanges();
+            return entity;
         }
 
         public void Dispose()
