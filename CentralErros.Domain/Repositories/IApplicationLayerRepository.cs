@@ -2,7 +2,8 @@
 
 namespace CentralErros.Domain.Repositories
 {
-    public interface IApplicationLayerRepository : IBaseRepository<ApplicationLayer>, IEntity
+    public interface IApplicationLayerRepository : IBaseRepository<ApplicationLayer>
     {
+        bool HasErrorWithoutApplicationLayerId(int id);
     }
 }
