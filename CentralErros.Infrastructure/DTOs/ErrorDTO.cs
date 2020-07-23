@@ -6,7 +6,6 @@ namespace CentralErros.Infrastructure.DTOs
 {
     public class ErrorDTO
     {
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Details { get; set; }
         public string Origin { get; set; }
