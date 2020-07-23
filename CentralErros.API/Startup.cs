@@ -1,13 +1,13 @@
-using CentralErros;
 using CentralErros.Infrastructure;
+using CentralErros.Domain.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using System;
+using CentralErros.Infrastructure.Repositories;
 
 namespace CentralErros.API
 {
@@ -24,13 +24,23 @@ namespace CentralErros.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.AddDbContext<CentralErrosContext>();
-
-            var connectionString = Configuration.GetConnectionString("CentralErrosConnection");
 
             services.AddDbContext<CentralErrosContext>();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AutoMapperProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            services.AddScoped<IApplicationLayerRepository, ApplicationLayerRepository>();
+            services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
+            services.AddScoped<IErrorRepository, ErrorRepository>();
+            services.AddScoped<ILanguageRepository, LanguageRepository>();
+            services.AddScoped<ILevelRepository, LevelRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
