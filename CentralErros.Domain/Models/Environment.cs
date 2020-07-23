@@ -7,6 +7,6 @@ namespace CentralErros.Domain.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Error> Errors { get; set; }
+        public virtual ICollection<Error> Errors { get; set; }
     }
 }
