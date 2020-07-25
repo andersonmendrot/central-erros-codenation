@@ -6,7 +6,6 @@ namespace CentralErros.Domain.Repositories
     public interface IErrorRepository
     {
         public List<Error> OrderByLevel(List<Error> errors, string orderDirection);
-        public List<Error> OrderByQuantity(List<Error> errors, string orderDirection);
         public List<Error> OrderByStatus(List<Error> errors, string orderDirection);
         public List<Error> FindByLevelId(int levelId);
         public List<Error> FindByEnvironmentId(int environmentId);
@@ -28,5 +27,7 @@ namespace CentralErros.Domain.Repositories
         public List<Error> SearchByTitle(List<Error> errorList, string title);
 
         public List<Error> SearchByOrigin(List<Error> errorList, string origin);
+
+        public int GetQuantity(Error error);
     }
 }

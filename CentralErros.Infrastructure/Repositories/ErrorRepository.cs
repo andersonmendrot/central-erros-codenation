@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CentralErros.Domain.Repositories;
 using CentralErros.Domain.Models;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using CentralErros.Infrastructure.Comparers;
 
 namespace CentralErros.Infrastructure.Repositories
 {
@@ -18,8 +17,9 @@ namespace CentralErros.Infrastructure.Repositories
         public void ChangeStatus(Error error)
         {
             error.Status = error.Status == 'y' ? 'n' : 'y';
-            var attachedEntry = _context.Entry(error);
-            attachedEntry.CurrentValues.SetValues(error);
+            //var attachedEntry = _context.Entry(error);
+            //attachedEntry.CurrentValues.SetValues(error);
+            _context.Update(error);
             _context.SaveChanges();
         }
 
@@ -31,7 +31,7 @@ namespace CentralErros.Infrastructure.Repositories
         }
 
         public List<Error> FindByEnvironmentId(int environmentId)
-        { 
+        {
             return _context.Errors.
                 Where(x => x.EnvironmentId == environmentId).
                 ToList();
@@ -78,16 +78,6 @@ namespace CentralErros.Infrastructure.Repositories
             return _context.Errors.OrderBy(x => x.LevelId).ToList();
         }
 
-        public List<Error> OrderByQuantity(List<Error> errors, string orderDirection)
-        {
-            if (orderDirection == "Descending")
-            {
-                return _context.Errors.OrderByDescending(x => x.NumberEvents).ToList();
-            }
-
-            return _context.Errors.OrderBy(x => x.NumberEvents).ToList();
-        }
-
         public List<Error> OrderByStatus(List<Error> errors, string orderDirection)
         {
             if (orderDirection == "Descending")
@@ -100,7 +90,7 @@ namespace CentralErros.Infrastructure.Repositories
 
         public List<Error> OrderByDate()
         {
-            return _context.Errors.OrderByDescending(x => x.CreatedAt).ToList();
+            return new List<Error>();
         }
 
         public Error Remove(Error error)
@@ -117,7 +107,6 @@ namespace CentralErros.Infrastructure.Repositories
             _context.SaveChanges();
         }
 
-        //deve ser testado novamente
         public void Update(Error error)
         {
             var attachedEntry = _context.Entry(error);
@@ -254,7 +243,7 @@ namespace CentralErros.Infrastructure.Repositories
         }
 
         public List<Error> GetByStatus(List<Error> errorList, char status)
-        {                
+        {
             return errorList.Where(x => x.Status == status).ToList();
         }
 
@@ -267,6 +256,20 @@ namespace CentralErros.Infrastructure.Repositories
         {
             origin = origin.Trim();
             return errorList.Where(x => x.Origin.Contains(origin)).ToList();
+        }
+
+        public int GetQuantity(Error error)
+        {
+            List<Error> errors = _context.Errors.
+                Where(x => x.Title == error.Title &&
+                    x.Details == error.Details &&
+                    x.Status == error.Status &&
+                    x.ApplicationLayerId == error.ApplicationLayerId &&
+                    x.EnvironmentId == error.EnvironmentId &&
+                    x.LanguageId == error.LanguageId &&
+                    x.LevelId == error.LevelId).ToList();
+
+            return errors.Count();
         }
     }
 }
