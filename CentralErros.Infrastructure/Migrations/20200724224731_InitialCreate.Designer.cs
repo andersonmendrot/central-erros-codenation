@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CentralErros.Infrastructure.Migrations
 {
     [DbContext(typeof(CentralErrosContext))]
-    [Migration("20200720202722_InitialCreate")]
+    [Migration("20200724224731_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,9 +78,6 @@ namespace CentralErros.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("LevelId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberEvents")
                         .HasColumnType("int");
 
                     b.Property<string>("Origin")

@@ -29,10 +29,6 @@ namespace CentralErros.Infrastructure.Mappings
                 .HasMaxLength(1)
                 .IsRequired();
 
-            builder.Property(x => x.NumberEvents)
-                .HasColumnType("int")
-                .IsRequired();
-
             builder.Property(x => x.CreatedAt)
                 .HasColumnName("CreatedAt")
                 .HasColumnType("datetime")

@@ -78,9 +78,6 @@ namespace CentralErros.Infrastructure.Migrations
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumberEvents")
-                        .HasColumnType("int");
-
                     b.Property<string>("Origin")
                         .IsRequired()
                         .HasColumnType("varchar(200)");

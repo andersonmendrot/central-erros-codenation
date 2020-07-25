@@ -85,7 +85,6 @@ namespace CentralErros.Infrastructure.Migrations
                     Details = table.Column<string>(type: "text", nullable: false),
                     Origin = table.Column<string>(type: "varchar(200)", nullable: false),
                     Status = table.Column<string>(type: "char", maxLength: 1, nullable: false),
-                    NumberEvents = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     ApplicationLayerId = table.Column<int>(nullable: false),
                     EnvironmentId = table.Column<int>(nullable: false),
