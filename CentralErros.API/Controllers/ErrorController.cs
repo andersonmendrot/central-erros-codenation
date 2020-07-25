@@ -74,11 +74,27 @@ namespace CentralErros.API.Controllers
             return Ok(_mapper.Map<ErrorDTO>(error));
         }
 
+        [HttpGet("{id}/ocurrences")]
+        public ActionResult<ErrorQuantityDTO> GetErrorAndOcurrences(Error error)
+        {
+            var errorToGet = _errorRepository.GetById(error.Id);
+
+            if (errorToGet == null)
+            {
+                return NotFound();
+            }
+
+            ErrorQuantityDTO errorQuantityDTO = _mapper.Map<ErrorQuantityDTO>(errorToGet);
+            errorQuantityDTO.Ocurrences = _errorRepository.GetQuantity(errorToGet);
+
+            return Ok(errorQuantityDTO);
+        }
+
         [HttpGet()]
         [HttpHead]
         public ActionResult<IEnumerable<ErrorDTO>> GetErrors(string environmentName, int? orderField, int? searchField, string orderDirection = "Descending", string searchValue = null)
         {
-            // orderField : 1 = Level, 2 = Quantity, 3 = Status
+            // orderField : 1 = Level, 2 = Status
             // searchField : 1 = ApplicationLayer, 2 = Language, 3 = Level, 4 = Origin, 5 = Title
             // orderDirection : "Ascending": ordena em ordem decrescente, "Descending": ordena em ordem crescente
             // searchValue : Valor a ser pesquisado
@@ -86,7 +102,7 @@ namespace CentralErros.API.Controllers
 
             // Caso nao haja nenhuma pesquisa, serão retornados todos os itens 
             // ordenados de forma descendente por numero de ocorrencias
-            var errors = _errorRepository.OrderByQuantity(_errorRepository.GetAll(), orderDirection);
+            var errors = _errorRepository.GetAll();
             if (orderField == null && searchField == null && searchValue == null)
             {
                 return Ok(_mapper.Map<IEnumerable<ErrorDTO>>(errors));
@@ -124,9 +140,6 @@ namespace CentralErros.API.Controllers
                     errors = _errorRepository.OrderByLevel(errors, orderDirection);
                     break;
                 case 2:
-                    errors = _errorRepository.OrderByQuantity(errors, orderDirection);
-                    break;
-                case 3:
                     errors = _errorRepository.OrderByStatus(errors, orderDirection);
                     break;
             }
