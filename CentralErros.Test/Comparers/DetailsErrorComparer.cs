@@ -6,16 +6,16 @@ using CentralErros.Domain.Models;
 
 namespace CentralErros.Test.Comparers
 {
-    public class ErrorNumberEventsComparer : IEqualityComparer<Error>
+    public class DetailsErrorComparer : IEqualityComparer<Error>
     {
         public bool Equals(Error x, Error y)
         {
-            return x.NumberEvents == y.NumberEvents;//Details.Equals(y.Details);
+            return x.Details == y.Details;
         }
 
         public int GetHashCode(Error obj)
         {
-            return obj.NumberEvents.GetHashCode();
+            return obj.Details.GetHashCode();
         }
     }
 }

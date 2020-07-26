@@ -182,7 +182,7 @@ namespace CentralErros.Test.Repositories
             }
         }
 
-        [Theory]
+        /*[Theory]
         [InlineData("Ascending")]
         [InlineData("Descending")]
         [InlineData("")]
@@ -209,7 +209,7 @@ namespace CentralErros.Test.Repositories
                     Assert.Equal(expected, actual, new ErrorIdComparer());
                 }
             }
-        }
+        }*/
 
         [Fact]
         public void ShouldAddNewWhenSave()
@@ -291,7 +291,7 @@ namespace CentralErros.Test.Repositories
             var fakeContext = new FakeContext("ShouldUpdate");
             fakeContext.FillWith<Error>();
             var data = fakeContext.GetFakeData<Error>().FirstOrDefault();
-            data.NumberEvents *= 2;
+            data.Details = "";
 
             using (var context = new CentralErrosContext(fakeContext.FakeOptions))
             {
@@ -299,7 +299,7 @@ namespace CentralErros.Test.Repositories
                 service.Update(data);
                 var actual = context.Errors.Where(x => x.Id == data.Id).SingleOrDefault();
 
-                Assert.Equal(data, actual, new ErrorNumberEventsComparer());
+                Assert.Equal(data, actual, new DetailsErrorComparer());
             }
         }
 

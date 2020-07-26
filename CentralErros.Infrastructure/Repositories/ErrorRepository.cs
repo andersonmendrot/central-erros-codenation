@@ -2,7 +2,6 @@
 using CentralErros.Domain.Repositories;
 using CentralErros.Domain.Models;
 using System.Linq;
-using CentralErros.Infrastructure.Comparers;
 
 namespace CentralErros.Infrastructure.Repositories
 {
