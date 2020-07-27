@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using CentralErros.Domain.Models;
 using CentralErros.Domain.Repositories;
 using CentralErros.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using CentralErros.Infrastructure.Repositories;
-using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Environment = CentralErros.Domain.Models.Environment;
 
 namespace CentralErros.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class EnvironmentController : ControllerBase
     {
         private readonly IEnvironmentRepository _environmentRepository;

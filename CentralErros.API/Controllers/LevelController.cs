@@ -5,13 +5,13 @@ using CentralErros.Domain.Models;
 using CentralErros.Domain.Repositories;
 using CentralErros.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using CentralErros.Infrastructure.Repositories;
-using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CentralErros.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class LevelController : ControllerBase
     {
         private readonly ILevelRepository _levelRepository;

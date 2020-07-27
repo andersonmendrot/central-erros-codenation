@@ -4,14 +4,14 @@ using AutoMapper;
 using CentralErros.Domain.Models;
 using CentralErros.Domain.Repositories;
 using CentralErros.Infrastructure.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CentralErros.Infrastructure.Repositories;
-using System.Linq;
 
 namespace CentralErros.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class ApplicationLayerController : ControllerBase
     {
         private readonly IApplicationLayerRepository _applicationLayerRepository;
