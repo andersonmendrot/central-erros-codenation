@@ -7,6 +7,7 @@ using AutoMapper;
 
 namespace CentralErros.API.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
@@ -15,16 +16,20 @@ namespace CentralErros.API.Controllers
         private readonly IAuthenticationRepository _authenticationRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly ILoggedUserRepository _loggedUserRepository;
 
-        public LoginController(IAuthenticationRepository authenticationService, IUserRepository userRepository, IMapper mapper, ILoggedUserRepository loggedUserRepository)
+        public LoginController(IAuthenticationRepository authenticationService, IUserRepository userRepository, IMapper mapper)
         {
             _authenticationRepository = authenticationService;
             _userRepository = userRepository;
             _mapper = mapper;
-            _loggedUserRepository = loggedUserRepository;
         }
 
+        /// <summary>
+        /// Realiza login (autenticação e autorização)
+        /// </summary>
+        /// <returns>Resultado de autenticação</returns>
+        /// <response code="200">Login realizado</response>
+        /// <response code="500">Não foi possível fazer login</response>
         [AllowAnonymous]
         [HttpPost]
         public ActionResult<AuthenticationResult> PostAsync([FromBody] UserLoginDTO loginUser)

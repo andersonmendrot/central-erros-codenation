@@ -1,6 +1,6 @@
 ﻿using CentralErros.Domain.Models;
-using System.Collections.Generic;
 using CentralErros.Domain.Repositories;
+using System.Linq;
 
 namespace CentralErros.Infrastructure.Repositories
 {
@@ -10,9 +10,9 @@ namespace CentralErros.Infrastructure.Repositories
         {
         }
 
-        public bool HasErrorWithoutApplicationLayerId(int id)
+        public int HasErrorWithApplicationLayerId(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Errors.Where(x => x.ApplicationLayerId == id).Count();
         }
     }
 }

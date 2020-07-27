@@ -12,6 +12,7 @@ namespace CentralErros.Infrastructure
             CreateMap<ApplicationLayer, ApplicationLayerDTO>().ReverseMap();
             CreateMap<Environment, EnvironmentDTO>().ReverseMap();
             CreateMap<Error, ErrorDTO>().ReverseMap();
+            CreateMap<Error, ErrorQuantityDTO>().ReverseMap();
             CreateMap<Language, LanguageDTO>().ReverseMap();
             CreateMap<Level, LevelDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();

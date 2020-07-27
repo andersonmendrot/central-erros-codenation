@@ -6,9 +6,11 @@ using CentralErros.Domain.Repositories;
 using CentralErros.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace CentralErros.API.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
@@ -22,13 +24,49 @@ namespace CentralErros.API.Controllers
             _mapper = mapper; 
         }
 
+        /// <summary>
+        /// Retorna todas as linguagens
+        /// </summary>
+        /// <returns>Uma listagem das linguagens cadastradas</returns>
+        /// <response code="200">Linguagens retornadas com sucesso</response>
+        /// <response code="401">Usuário sem autorização para acesso</response>
+        /// <response code="404">Linguagens não encontradas</response>
+        /// <response code="500">Não foi possível fazer a listagem das linguagens</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
-        public ActionResult<IEnumerable<LanguageDTO>> Getlanguages()
+        public ActionResult<IEnumerable<LanguageDTO>> GetLanguages()
         {
             var service = _languageRepository.GetAll();
+
+            if(service.Count == 0)
+            {
+                return NotFound();
+            }
+
             return Ok(_mapper.Map<IEnumerable<LanguageDTO>>(service));
         }
 
+        /// <summary>
+        /// Cadastra uma linguagem
+        /// </summary>
+        /// <param language="string"></param>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     POST 
+        ///     {
+        ///        "name": "Python",
+        ///     }
+        ///
+        /// </remarks>
+        /// <returns>Uma nova linguagem cadastrada</returns>
+        /// <response code="200">Linguagem cadastrada com sucesso</response>
+        /// <response code="400">Entrada inválida (nula ou espaço em branco)</response>
+        /// <response code="401">Usuário sem autorização para acesso</response>
+        /// <response code="500">Não foi possível cadastrar uma nova linguagem</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [HttpPost]
         public ActionResult<LanguageDTO> CreateLanguage(LanguageDTO language)
         {
@@ -43,23 +81,5 @@ namespace CentralErros.API.Controllers
             
             return Ok(_mapper.Map<LanguageDTO>(LanguageDTO));
         }
-
-        /*[HttpDelete]
-        public ActionResult<LanguageDTO> RemoveLanguage(int languageId)
-        {
-            //se houver algum registro de erro com o language que se deseja remover
-            //entao deve-se retornar um codigo de erro
-            if (_languageRepository.HasErrorsWithLanguageId(languageId))
-            {
-                return StatusCode(404); 
-            }
-
-            if(_languageRepository.GetById(languageId) == null)
-            {
-                return StatusCode(404);
-            }
-
-            return Ok(_mapper.Map<LanguageDTO>(_languageRepository.Remove(languageId)));
-        }*/
     }
 }

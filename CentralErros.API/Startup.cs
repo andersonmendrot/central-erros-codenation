@@ -12,7 +12,6 @@ using CentralErros.Infrastructure.Repositories;
 using CentralErros.Domain.Models;
 using Microsoft.OpenApi.Models;
 using AutoMapper;
-
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
@@ -50,8 +49,6 @@ namespace CentralErros.API
             services.AddScoped<ILevelRepository, LevelRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
-            services.AddControllers();
-
             var token = new TokenConfiguration();
             new ConfigureFromConfigurationOptions<TokenConfiguration>(Configuration.GetSection(typeof(TokenConfiguration).Name)).Configure(token);
             services.AddSingleton(token);
@@ -79,29 +76,15 @@ namespace CentralErros.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CentralErros", Version = "v1", Description = "Web API do projeto final da Codenation", });
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "CentralErros", 
+                    Version = "v1", 
+                    Description = "Web API do projeto final da Codenation" 
+                });
 
                 var xmlFile = $"{ Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement(){
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            In = ParameterLocation.Header,
-                            Name = "Bearer",
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Scheme = "oauth2",
-                            
-                        },
-                        new List<string>()
-                    }
-                });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -110,6 +93,25 @@ namespace CentralErros.API
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+                        },
+                        new List<string>()
+                    }
+                });
+
 
             });
 
@@ -135,13 +137,6 @@ namespace CentralErros.API
 
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
-
-            services.AddScoped<IApplicationLayerRepository, ApplicationLayerRepository>();
-            services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
-            services.AddScoped<IErrorRepository, ErrorRepository>();
-            services.AddScoped<ILanguageRepository, LanguageRepository>();
-            services.AddScoped<ILevelRepository, LevelRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -151,7 +146,7 @@ namespace CentralErros.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseRouting();
 
             app.UseSwagger();

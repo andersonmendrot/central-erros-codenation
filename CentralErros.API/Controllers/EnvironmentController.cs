@@ -6,9 +6,11 @@ using CentralErros.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Environment = CentralErros.Domain.Models.Environment;
+using Microsoft.AspNetCore.Http;
 
 namespace CentralErros.API.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
@@ -22,19 +24,55 @@ namespace CentralErros.API.Controllers
             _mapper = mapper; 
         }
 
+        /// <summary>
+        /// Retorna todos os ambientes
+        /// </summary>
+        /// <returns>Uma listagem dos ambientes cadastrados</returns>
+        /// <response code="200">Ambientes retornados com sucesso</response>
+        /// <response code="401">Usuário sem autorização para acesso</response>
+        /// <response code="404">Ambientes não encontrados</response>
+        /// <response code="500">Não foi possível fazer a listagem dos ambientes</response> 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
-        public ActionResult<IEnumerable<EnvironmentDTO>> Getenvironments()
+        public ActionResult<IEnumerable<EnvironmentDTO>> GetEnvironments()
         {
             var service = _environmentRepository.GetAll();
+
+            if(service.Count == 0)
+            {
+                return NotFound();
+            }
+
             return Ok(_mapper.Map<IEnumerable<EnvironmentDTO>>(service));
         }
 
+        /// <summary>
+        /// Cadastra um ambiente
+        /// </summary>
+        /// <param environment="string"></param>
+        /// <remarks>
+        /// Exemplo de requisição:
+        ///
+        ///     POST 
+        ///     {
+        ///        "name": "Homologação",
+        ///     }
+        ///
+        /// </remarks>
+        /// <returns>Um novo ambiente cadastrado</returns>
+        /// <response code="200">Ambiente cadastrado com sucesso</response>
+        /// <response code="400">Entrada inválida (nula ou espaço em branco)</response>
+        /// <response code="401">Usuário sem autorização para acesso</response>
+        /// <response code="500">Não foi possível cadastrar um novo ambiente</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public ActionResult<EnvironmentDTO> CreateEnvironment(EnvironmentDTO environment)
         {
             if (String.IsNullOrWhiteSpace(environment.Name))
             {
-                return StatusCode(400);
+                return BadRequest();
             }
             var entity = _mapper.Map<Environment>(environment);
             _environmentRepository.Save(entity);
@@ -43,23 +81,5 @@ namespace CentralErros.API.Controllers
             
             return Ok(_mapper.Map<EnvironmentDTO>(EnvironmentDTO));
         }
-
-        /*[HttpDelete]
-        public ActionResult<EnvironmentDTO> RemoveEnvironment(int environmentId)
-        {
-            //se houver algum registro de erro com o environment que se deseja remover
-            //entao deve-se retornar um codigo de erro
-            if (_environmentRepository.HasErrorsWithEnvironmentId(environmentId))
-            {
-                return StatusCode(404); 
-            }
-
-            if(_environmentRepository.GetById(environmentId) == null)
-            {
-                return StatusCode(404);
-            }
-
-            return Ok(_mapper.Map<EnvironmentDTO>(_environmentRepository.Remove(environmentId)));
-        }*/
     }
 }

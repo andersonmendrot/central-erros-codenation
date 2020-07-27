@@ -259,16 +259,16 @@ namespace CentralErros.Infrastructure.Repositories
 
         public int GetQuantity(Error error)
         {
-            List<Error> errors = _context.Errors.
-                Where(x => x.Title == error.Title &&
+            var findValue = error.Title;
+            List<Error> errors = _context.Errors.ToList();
+
+            return errors.Where(x => x.Title == error.Title &&
                     x.Details == error.Details &&
-                    x.Status == error.Status &&
+                    x.Status.ToString() == error.Status.ToString() &&
                     x.ApplicationLayerId == error.ApplicationLayerId &&
                     x.EnvironmentId == error.EnvironmentId &&
                     x.LanguageId == error.LanguageId &&
-                    x.LevelId == error.LevelId).ToList();
-
-            return errors.Count();
+                    x.LevelId == error.LevelId).Count();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CentralErros.Domain.Repositories;
 using CentralErros.Domain.Models;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace CentralErros.Infrastructure.Repositories
 {
@@ -20,6 +21,16 @@ namespace CentralErros.Infrastructure.Repositories
         public User GetByEmail(string email)
         {
             return _context.Users.SingleOrDefault(x => x.Email == email);
+        }
+
+        public List<User> GetAll()
+        {
+            return _context.Users.ToList();
+        }
+
+        public User GetById(int id)
+        {
+            return _context.Users.SingleOrDefault(x => x.Id == id);
         }
 
         public BaseResult<User> Authorize(User user)
