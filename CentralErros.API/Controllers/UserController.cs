@@ -8,19 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 [Authorize("Bearer")]
 public sealed class UserController : ControllerBase
 {
-    private readonly ILoggedUserService _loggedUserService;
-
-    public UserController(
-        ILoggedUserService loggedUserService)
+    private readonly ILoggedUserRepository _loggedUserRepository;
+    public UserController(ILoggedUserRepository loggedUserRepository)
     {
-        _loggedUserService = loggedUserService;
+        _loggedUserRepository = loggedUserRepository;
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public ActionResult<BaseResult<User>> Get()
     {
-        var user = _loggedUserService.GetLoggedUser<MyLoggedUser>();
-
+        var user = _loggedUserRepository.GetLoggedUser();
         return Ok(user);
     }
 }
