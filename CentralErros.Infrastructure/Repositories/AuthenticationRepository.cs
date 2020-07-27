@@ -1,23 +1,21 @@
-﻿using CentralErros.Domain.Interfaces;
-using CentralErros.Domain.Models;
+﻿using CentralErros.Domain.Models;
+using CentralErros.Domain.Repositories;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using System.Security.Principal;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CentralErros.Domain.Repositories
+namespace CentralErros.Infrastructure.Repositories
 {
-    public sealed class JwtIdentityAuthenticationService : IAuthenticationService
+    public sealed class AuthenticationRepository : IAuthenticationRepository
     {
         private readonly SigningConfiguration _signingConfiguration;
         private readonly TokenConfiguration _tokenConfiguration;
 
-        public JwtIdentityAuthenticationService(
+        public AuthenticationRepository(
             SigningConfiguration signingConfiguration,
             TokenConfiguration tokenConfiguration)
         {
@@ -25,27 +23,26 @@ namespace CentralErros.Domain.Repositories
             _tokenConfiguration = tokenConfiguration;
         }
 
-        public AuthenticationResult Authenticate(
-            IUser user)
+        public AuthenticationResult Authenticate(User user)
         {
             var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-            new Claim(JwtRegisteredClaimNames.UniqueName, user.Id),
-            new Claim("Data", ToJson(user))
-        };
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Id.ToString()),
+                new Claim("Data", ToJson(user))
+            };
 
             var identity = new ClaimsIdentity(
-                new GenericIdentity(user.Id, "Login"),
+                new GenericIdentity(user.Id.ToString(), "Login"),
                 claims);
 
             var created = DateTime.UtcNow;
-            var expiration = created + TimeSpan.FromSeconds(_tokenConfiguration.ExpirationInSeconds); // dynamic
+            var expiration = created + TimeSpan.FromSeconds(_tokenConfiguration.ExpirationInSeconds); 
             var handler = new JwtSecurityTokenHandler();
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _tokenConfiguration.ValidIssuer, // dynamic
-                Audience = _tokenConfiguration.ValidAudience, // dynamic
+                Issuer = _tokenConfiguration.ValidIssuer, 
+                Audience = _tokenConfiguration.ValidAudience, 
                 SigningCredentials = _signingConfiguration.SigningCredentials,
                 Subject = identity,
                 NotBefore = created,

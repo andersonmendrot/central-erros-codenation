@@ -1,30 +1,19 @@
-﻿using CentralErros.Domain.Repositories;
-using CentralErros.Domain.Models;
-using System.Linq;
+﻿using CentralErros.Domain.Models;
+using CentralErros.Domain.Repositories;
 
 namespace CentralErros.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class AuthorizationRepository : IAuthorizationRepository
     {
-        private readonly CentralErrosContext _context;
-        public UserRepository(CentralErrosContext context)
+        private readonly UserRepository _userRepository;
+        public AuthorizationRepository(UserRepository userRepository)
         {
-            _context = context;
-        }
-        public void Save(User user)
-        {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-        }
-
-        public User GetByEmail(string email)
-        {
-            return _context.Users.SingleOrDefault(x => x.Email == email);
+            _userRepository = userRepository;
         }
 
         public BaseResult<User> Authorize(User user)
         {
-            User userSearch = GetByEmail(user.Email);
+            User userSearch = _userRepository.GetByEmail(user.Email);
             var result = new BaseResult<User>();
 
             if (userSearch == null)
