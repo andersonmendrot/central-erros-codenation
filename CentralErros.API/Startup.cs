@@ -1,19 +1,23 @@
+using System;
 using CentralErros.Infrastructure;
 using CentralErros.Domain.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AutoMapper;
-using System;
 using CentralErros.Infrastructure.Repositories;
 using CentralErros.Domain.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using IAuthorizationService = CentralErros.Domain.Repositories.IAuthorizationService;
+using Microsoft.OpenApi.Models;
+using AutoMapper;
+
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
+using System.IO;
+using System.Collections.Generic;
 
 namespace CentralErros.API
 {
@@ -31,10 +35,22 @@ namespace CentralErros.API
         {
             services.AddCors();
 
-            services.AddHttpContextAccessor(); // here
-            services.AddSingleton<IAuthenticationService, JwtIdentityAuthenticationService>();
-            services.AddSingleton<IAuthorizationService, AuthorizationService>();
-            services.AddSingleton<ILoggedUserService, IdentityLoggedUserService>(); // here
+            services.AddHttpContextAccessor();
+            services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+            services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
+            
+            services.AddDbContext<CentralErrosContext>();
+
+            services.AddScoped<IApplicationLayerRepository, ApplicationLayerRepository>();
+            services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+            services.AddScoped<IApplicationLayerRepository, ApplicationLayerRepository>();
+            services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
+            services.AddScoped<IErrorRepository, ErrorRepository>();
+            services.AddScoped<ILanguageRepository, LanguageRepository>();
+            services.AddScoped<ILevelRepository, LevelRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddControllers();
 
             var token = new TokenConfiguration();
             new ConfigureFromConfigurationOptions<TokenConfiguration>(Configuration.GetSection(typeof(TokenConfiguration).Name)).Configure(token);
@@ -42,18 +58,18 @@ namespace CentralErros.API
 
             services.AddControllers();
 
-            var signing = new SigningConfiguration();
-            services.AddSingleton(signing);
+            var signingConfiguration = new SigningConfiguration();
+            services.AddSingleton(signingConfiguration);
 
             services.AddDbContext<CentralErrosContext>();
 
-            services.AddAuthentication(opt => // here
+            services.AddAuthentication(x => 
             {
-                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
-                x.TokenValidationParameters.IssuerSigningKey = signing.Key;
+                x.TokenValidationParameters.IssuerSigningKey = signingConfiguration.Key;
                 x.TokenValidationParameters.ValidAudience = token.ValidAudience;
                 x.TokenValidationParameters.ValidIssuer = token.ValidIssuer;
                 x.TokenValidationParameters.ValidateIssuerSigningKey = token.ValidateIssuerSigningKey;
@@ -61,7 +77,43 @@ namespace CentralErros.API
                 x.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
             });
 
-            services.AddAuthorization(auth => // here
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CentralErros", Version = "v1", Description = "Web API do projeto final da Codenation", });
+
+                var xmlFile = $"{ Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement(){
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            In = ParameterLocation.Header,
+                            Name = "Bearer",
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            
+                        },
+                        new List<string>()
+                    }
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+            });
+
+            services.AddAuthorization(auth => 
             {
                 auth.AddPolicy(TokenConfiguration.Policy, new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
@@ -100,9 +152,14 @@ namespace CentralErros.API
                 app.UseDeveloperExceptionPage();
             }
 
-            
-
             app.UseRouting();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "CentralErros");
+            });
 
             app.UseAuthorization();
             app.UseAuthentication();
