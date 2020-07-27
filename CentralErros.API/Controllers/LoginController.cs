@@ -1,47 +1,39 @@
 ﻿using CentralErros.Domain.Repositories;
-using CentralErros.Domain.Models.Authentication;
+using CentralErros.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using IAuthorizationService = CentralErros.Domain.Repositories.IAuthorizationService;
-using CentralErros.Domain.Models;
+using CentralErros.Infrastructure.DTOs;
+using AutoMapper;
 
 namespace CentralErros.API.Controllers
 {
-    [Route("api/user")]
+    [Route("api/[controller]")]
     [ApiController]
-    //[Authorize("Bearer")]
-    public sealed class LoginController : ControllerBase
+    [Authorize("Bearer")]
+    public class LoginController : ControllerBase
     {
-        private readonly IAuthenticationService _authenticationService;
-        private readonly IAuthorizationService _authorizationService;
+        private readonly IAuthenticationRepository _authenticationRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        private readonly ILoggedUserRepository _loggedUserRepository;
 
-        public LoginController(
-            IAuthenticationService authenticationService,
-            IAuthorizationService authorizationService)
+        public LoginController(IAuthenticationRepository authenticationService, IUserRepository userRepository, IMapper mapper, ILoggedUserRepository loggedUserRepository)
         {
-            _authenticationService = authenticationService;
-            _authorizationService = authorizationService;
+            _authenticationRepository = authenticationService;
+            _userRepository = userRepository;
+            _mapper = mapper;
+            _loggedUserRepository = loggedUserRepository;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> PostAsync(
-            [FromBody] LoginUser loginUser)
+        public ActionResult<AuthenticationResult> PostAsync([FromBody] UserLoginDTO loginUser)
         {
-            var authorization = await _authorizationService.AuthorizeAsync(loginUser);
+            var authorization = _userRepository.Authorize(_mapper.Map<User>(loginUser));
             if (!authorization.Success)
-            {
                 return Ok(authorization);
-            }
 
-            var authentication = _authenticationService.Authenticate(authorization.Data);
-            if (!authentication.Success)
-            {
-                return Ok(authentication);
-            }
-
-            return Ok(authentication);
+            return Ok(_authenticationRepository.Authenticate(authorization.Data));
         }
     }
 }
