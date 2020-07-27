@@ -15,6 +15,7 @@ namespace CentralErros.Infrastructure
             CreateMap<Language, LanguageDTO>().ReverseMap();
             CreateMap<Level, LevelDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, UserLoginDTO>().ReverseMap();
         }
     }
 }
