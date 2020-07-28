@@ -35,11 +35,10 @@ namespace CentralErros.API
             services.AddCors();
 
             services.AddHttpContextAccessor();
-            services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
-            services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
-            
+              
             services.AddDbContext<CentralErrosContext>();
-
+            
+            services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
             services.AddScoped<IApplicationLayerRepository, ApplicationLayerRepository>();
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
             services.AddScoped<IApplicationLayerRepository, ApplicationLayerRepository>();
@@ -48,38 +47,68 @@ namespace CentralErros.API
             services.AddScoped<ILanguageRepository, LanguageRepository>();
             services.AddScoped<ILevelRepository, LevelRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-
-            var token = new TokenConfiguration();
-            new ConfigureFromConfigurationOptions<TokenConfiguration>(Configuration.GetSection(typeof(TokenConfiguration).Name)).Configure(token);
-            services.AddSingleton(token);
-
             services.AddControllers();
-
-            var signingConfiguration = new SigningConfiguration();
-            services.AddSingleton(signingConfiguration);
 
             services.AddDbContext<CentralErrosContext>();
 
-            services.AddAuthentication(x => 
+            ConfigureAuthenticationAuthorization(services, Configuration);
+            ConfigureSwagger(services);
+
+            var mappingConfig = new MapperConfiguration(mc =>
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+                mc.AddProfile(new AutoMapperProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+
+            services
+           .AddMvc()
+           .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+           .AddJsonOptions(opt =>
+           {
+               opt.JsonSerializerOptions.IgnoreNullValues = true;
+           });
+
+            
+            services.AddSingleton(mapper);
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
             {
-                x.TokenValidationParameters.IssuerSigningKey = signingConfiguration.Key;
-                x.TokenValidationParameters.ValidAudience = token.ValidAudience;
-                x.TokenValidationParameters.ValidIssuer = token.ValidIssuer;
-                x.TokenValidationParameters.ValidateIssuerSigningKey = token.ValidateIssuerSigningKey;
-                x.TokenValidationParameters.ValidateLifetime = token.ValidateLifetime;
-                x.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "CentralErros");
             });
 
+            app.UseRouting();
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+
+        private static void ConfigureSwagger(IServiceCollection services)
+        {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { 
-                    Title = "CentralErros", 
-                    Version = "v1", 
-                    Description = "Web API do projeto final da Codenation" 
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "CentralErros",
+                    Version = "v1",
+                    Description = "Web API do projeto final da Codenation"
                 });
 
                 var xmlFile = $"{ Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -112,56 +141,39 @@ namespace CentralErros.API
                     }
                 });
 
+               
+        });
+        }
 
+        private static void ConfigureAuthenticationAuthorization(IServiceCollection services, IConfiguration Configuration)
+        {
+            var token = new TokenConfiguration();
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(Configuration.GetSection(typeof(TokenConfiguration).Name)).Configure(token);
+            services.AddSingleton(token);
+
+            var signingConfiguration = new SigningConfiguration();
+            services.AddSingleton(signingConfiguration);
+
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.TokenValidationParameters.IssuerSigningKey = signingConfiguration.Key;
+                x.TokenValidationParameters.ValidAudience = token.ValidAudience;
+                x.TokenValidationParameters.ValidIssuer = token.ValidIssuer;
+                x.TokenValidationParameters.ValidateIssuerSigningKey = token.ValidateIssuerSigningKey;
+                x.TokenValidationParameters.ValidateLifetime = token.ValidateLifetime;
+                x.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
             });
 
-            services.AddAuthorization(auth => 
+            services.AddAuthorization(auth =>
             {
                 auth.AddPolicy(TokenConfiguration.Policy, new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser().Build());
-            });
-
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new AutoMapperProfile());
-            });
-
-            services
-           .AddMvc()
-           .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-           .AddJsonOptions(opt =>
-           {
-               opt.JsonSerializerOptions.IgnoreNullValues = true;
-           });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            
-            app.UseRouting();
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("v1/swagger.json", "CentralErros");
-            });
-
-            app.UseAuthorization();
-            app.UseAuthentication();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
             });
         }
     }
