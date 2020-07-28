@@ -182,35 +182,6 @@ namespace CentralErros.Test.Repositories
             }
         }
 
-        /*[Theory]
-        [InlineData("Ascending")]
-        [InlineData("Descending")]
-        [InlineData("")]
-        public void ShouldOrderByQuantity(string orderDirection)
-        {
-            var fakeContext = new FakeContext("OrderByQuantity");
-            fakeContext.FillWith<Error>();
-
-            using (var context = new CentralErrosContext(fakeContext.FakeOptions))
-            {
-                var service = new ErrorRepository(context);
-                var actual = service.OrderByQuantity(service.GetAll(),orderDirection).ToList();
-                var expected = new List<Error>();
-
-                if (orderDirection == "Descending")
-                {
-                    expected = fakeContext.GetFakeData<Error>().OrderByDescending(x => x.NumberEvents).ToList();
-                    Assert.Equal(expected, actual, new ErrorIdComparer());
-                }
-
-                else
-                {
-                    expected = fakeContext.GetFakeData<Error>().OrderBy(x => x.NumberEvents).ToList();
-                    Assert.Equal(expected, actual, new ErrorIdComparer());
-                }
-            }
-        }*/
-
         [Fact]
         public void ShouldAddNewWhenSave()
         {
@@ -300,26 +271,6 @@ namespace CentralErros.Test.Repositories
                 var actual = context.Errors.Where(x => x.Id == data.Id).SingleOrDefault();
 
                 Assert.Equal(data, actual, new DetailsErrorComparer());
-            }
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        public void ShouldLimitErrorListLength(int limit)
-        {
-            var fakeContext = new FakeContext("LimitListLength");
-            fakeContext.GetFakeData<Error>();
-
-            using (var context = new CentralErrosContext(fakeContext.FakeOptions))
-            {
-                var expected = context.Errors.Take(limit).ToList();
-
-                var service = new ErrorRepository(context);
-                var actual = service.LimitResultNumber(context.Errors.ToList(), limit);
-
-                Assert.Equal(expected, actual, new ErrorIdComparer());
             }
         }
     }
