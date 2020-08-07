@@ -32,12 +32,12 @@ namespace CentralErros.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-
             services.AddHttpContextAccessor();
               
             services.AddDbContext<CentralErrosContext>();
-            
+
+            services.AddCors();
+
             services.AddScoped<ILoggedUserRepository, LoggedUserRepository>();
             services.AddScoped<IApplicationLayerRepository, ApplicationLayerRepository>();
             services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
@@ -51,8 +51,7 @@ namespace CentralErros.API
 
             services.AddDbContext<CentralErrosContext>();
 
-            ConfigureAuthenticationAuthorization(services, Configuration);
-            ConfigureSwagger(services);
+           
 
             var mappingConfig = new MapperConfiguration(mc =>
             {
@@ -68,7 +67,9 @@ namespace CentralErros.API
                opt.JsonSerializerOptions.IgnoreNullValues = true;
            });
 
-            
+            ConfigureAuthenticationAuthorization(services, Configuration);
+            ConfigureSwagger(services);
+
             services.AddSingleton(mapper);
         }
 
@@ -118,9 +119,12 @@ namespace CentralErros.API
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
-                    In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT authorization using Bearer"
+                    
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -133,16 +137,15 @@ namespace CentralErros.API
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             },
-                            Scheme = "oauth2",
+                            /*/*Scheme = "oauth2",
                             Name = "Bearer",
-                            In = ParameterLocation.Header,
+                            Scheme= "bearer",
+                            In = ParameterLocation.Header,*/
                         },
                         new List<string>()
                     }
-                });
-
-               
-        });
+                });     
+            });
         }
 
         private static void ConfigureAuthenticationAuthorization(IServiceCollection services, IConfiguration Configuration)

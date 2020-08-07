@@ -26,7 +26,7 @@ namespace CentralErros.API.Controllers
         }
 
         /// <summary>
-        /// Cadastra um ambiente
+        /// Cadastra um usuario
         /// </summary>
         /// <param name="string"></param>
         /// <param email="string"></param>
@@ -44,7 +44,7 @@ namespace CentralErros.API.Controllers
         ///    }
         ///
         /// </remarks>
-        /// <returns>Um novo ambiente cadastrado</returns>
+        /// <returns>Um novo usuário cadastrado</returns>
         /// <response code="200">Usuário cadastrado com sucesso</response>
         /// <response code="400">Entrada inválida</response>
         /// <response code="401">Usuário sem autorização para acesso</response>
