@@ -1,4 +1,4 @@
-## Central de Erros (em desenvolvimento)
+## Central de Erros 
 ### Projeto Final do curso AceleraDev oferecido pela CodeNation em parceria com a Stone
 
 ### Objetivo
