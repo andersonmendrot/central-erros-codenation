@@ -1,5 +1,7 @@
-## Central de Erros (em desenvolvimento)
+## Central de Erros 
 ### Projeto Final do curso AceleraDev oferecido pela CodeNation em parceria com a Stone
+
+A documentação da API no Swagger se encontra neste [link](http://central-de-erros-api-anderson.herokuapp.com/swagger/index.html).
 
 ### Objetivo
 
@@ -11,3 +13,18 @@ A arquitetura do projeto é formada por:
 - criar endpoints para serem usados pelo frontend da aplicação
 - criar um endpoint que será usado para gravar os logs de erro em um banco de dados relacional
 - a API deve ser segura, permitindo acesso apenas com um token de autenticação válido
+
+### Ferramentas 
+- Visual Studio 2017
+- SQL Server 
+- Heroku
+- Swagger
+- Docker
+
+### Linguagens e bibliotecas
+
+- C# com .NET Core 3.1
+- Entity Framework Core
+- SQL Server 2019
+- Identity
+
