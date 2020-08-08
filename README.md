@@ -30,5 +30,10 @@ A arquitetura do projeto é formada por:
 
 ### Modelo relacional do banco de dados
 
+- Application layer: ex. Web, Desktop, Mobile
+- Environment: ex. Produção, Homologação, Desenvolvimento
+- Level: ex. Error, Warning, Info, Debug, Trace
+- Language: ex. C#, Python, JavaScript
+
 !["Modelo relacional do banco de dados"](https://github.com/andersonmendrot/central-erros-codenation/blob/master/modelo_relacional_db.png)
 
