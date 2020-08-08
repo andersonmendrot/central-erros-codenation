@@ -2,6 +2,7 @@
 ### Projeto Final do curso AceleraDev oferecido pela CodeNation em parceria com a Stone
 
 A documentação da API no Swagger se encontra neste [link](http://central-de-erros-api-anderson.herokuapp.com/swagger/index.html).
+O vídeo explicativo do projeto se encontra neste [link](https://www.youtube.com/watch?v=Gyf4lKfvRmA).
 
 ### Objetivo
 
