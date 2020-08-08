@@ -28,3 +28,7 @@ A arquitetura do projeto é formada por:
 - SQL Server 2019
 - Identity
 
+### Modelo relacional do banco de dados
+
+!["Modelo relacional do banco de dados"](https://github.com/andersonmendrot/central-erros-codenation/blob/master/modelo_relacional_db.png)
+
