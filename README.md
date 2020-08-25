@@ -1,7 +1,11 @@
 ## Central de Erros 
 ### Projeto Final do curso AceleraDev oferecido pela CodeNation em parceria com a Stone
 
+
+
 A documentação da API no Swagger se encontra neste [link](http://central-de-erros-api-anderson.herokuapp.com/swagger/index.html).
+
+O vídeo explicativo do projeto se encontra neste [link](https://www.youtube.com/watch?v=Gyf4lKfvRmA).
 
 ### Objetivo
 
@@ -27,4 +31,22 @@ A arquitetura do projeto é formada por:
 - Entity Framework Core
 - SQL Server 2019
 - Identity
+
+### Modelo relacional do banco de dados
+
+- Application layer: ex. Web, Desktop, Mobile
+- Environment: ex. Produção, Homologação, Desenvolvimento
+- Level: ex. Error, Warning, Info, Debug, Trace
+- Language: ex. C#, Python, JavaScript
+
+!["Modelo relacional do banco de dados"](https://github.com/andersonmendrot/central-erros-codenation/blob/master/modelo_relacional_db.png)
+
+
+### Estrutura do projeto
+
+O projeto foi dividido em camadas de modo a seguir a Clean Architecture.
+
+!["Estrutura do projeto"](https://github.com/andersonmendrot/central-erros-codenation/blob/master/diagrama_projeto.png)
+
+
 
