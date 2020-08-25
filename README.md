@@ -41,3 +41,12 @@ A arquitetura do projeto é formada por:
 
 !["Modelo relacional do banco de dados"](https://github.com/andersonmendrot/central-erros-codenation/blob/master/modelo_relacional_db.png)
 
+
+### Estrutura do projeto
+
+O projeto foi dividido em camadas de modo a seguir a Clean Architecture.
+
+!["Estrutura do projeto"](https://github.com/andersonmendrot/central-erros-codenation/blob/master/estrutura_do_projeto.png)
+
+
+
