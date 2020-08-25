@@ -9,10 +9,5 @@ namespace CentralErros.Infrastructure.Repositories
         public ApplicationLayerRepository(CentralErrosContext context) : base(context)
         {
         }
-
-        public int HasErrorWithApplicationLayerId(int id)
-        {
-            return _context.Errors.Where(x => x.ApplicationLayerId == id).Count();
-        }
     }
 }

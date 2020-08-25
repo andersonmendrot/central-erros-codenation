@@ -7,11 +7,6 @@ namespace CentralErros.Domain.Repositories
     {
         public List<Error> OrderByLevel(List<Error> errors, string orderDirection);
         public List<Error> OrderByStatus(List<Error> errors, string orderDirection);
-        public List<Error> FindByLevelId(int levelId);
-        public List<Error> FindByEnvironmentId(int environmentId);
-        public List<Error> FindByApplicationLayerId(int applicationLayerId);
-        public List<Error> FindByStatus(char status);
-        public List<Error> FindByLanguageId(int languageId);
         public void ChangeStatus(Error error);
         public void Save(Error error);
         public List<Error> GetAll();

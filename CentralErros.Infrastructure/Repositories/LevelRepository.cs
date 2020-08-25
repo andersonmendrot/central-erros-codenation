@@ -9,10 +9,5 @@ namespace CentralErros.Infrastructure.Repositories
         public LevelRepository(CentralErrosContext context) : base(context)
         {
         }
-
-        public bool HasErrorsWithLevelId(int id)
-        {
-            return _context.Errors.Any(x => x.LevelId == id);
-        }
     }
 }

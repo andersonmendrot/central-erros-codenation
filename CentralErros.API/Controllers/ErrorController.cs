@@ -7,6 +7,7 @@ using CentralErros.Infrastructure.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using CentralErros.API.Helpers;
 
 namespace CentralErros.API.Controllers
 {
@@ -18,6 +19,8 @@ namespace CentralErros.API.Controllers
     {
         private readonly IErrorRepository _errorRepository;
         private readonly IMapper _mapper;
+        private readonly IOrderHelper _orderHelper;
+        private readonly ISearchHelper _searchHelper;
 
         public ErrorController(IErrorRepository errorRepository, IMapper mapper)
         {
@@ -146,6 +149,11 @@ namespace CentralErros.API.Controllers
 
         /// <summary>
         /// Retorna uma lista de erros após filtros e ordenação 
+        /// orderField : 1 = Level, 2 = Status
+        /// searchField : 1 = ApplicationLayer, 2 = Language, 3 = Level, 4 = Origin, 5 = Title
+        /// orderDirection : "Ascending": ordena em ordem decrescente, "Descending": ordena em ordem crescente
+        /// searchValue : Valor a ser pesquisado
+        /// Caso nao haja nenhuma pesquisa, serão retornados todos os itens ordenados de forma descendente por numero de ocorrencias
         /// </summary>
         /// <response code="200">Retorno de lista de erros filtrada realizada com sucesso</response>
         /// <response code="401">Usuário sem autorização para acesso</response>
@@ -155,14 +163,8 @@ namespace CentralErros.API.Controllers
         [HttpHead]
         public ActionResult<IEnumerable<ErrorDTO>> GetErrors(string environmentName, int? orderField, int? searchField, string orderDirection = "Descending", string searchValue = null)
         {
-            // orderField : 1 = Level, 2 = Status
-            // searchField : 1 = ApplicationLayer, 2 = Language, 3 = Level, 4 = Origin, 5 = Title
-            // orderDirection : "Ascending": ordena em ordem decrescente, "Descending": ordena em ordem crescente
-            // searchValue : Valor a ser pesquisado
-
-            // Caso nao haja nenhuma pesquisa, serão retornados todos os itens 
-            // ordenados de forma descendente por numero de ocorrencias
             var errors = _errorRepository.GetAll();
+
             if (orderField == null && searchField == null && searchValue == null)
             {
                 return Ok(_mapper.Map<IEnumerable<ErrorDTO>>(errors));
@@ -194,15 +196,7 @@ namespace CentralErros.API.Controllers
                 return StatusCode(422);
             }
 
-            switch (orderField)
-            {
-                case 1:
-                    errors = _errorRepository.OrderByLevel(errors, orderDirection);
-                    break;
-                case 2:
-                    errors = _errorRepository.OrderByStatus(errors, orderDirection);
-                    break;
-            }
+            errors = _orderHelper.OrderErrors(errors, orderDirection, orderField);
 
             // Pesquisa
 
@@ -213,27 +207,7 @@ namespace CentralErros.API.Controllers
                 return StatusCode(422);
             }
 
-            if(!String.IsNullOrWhiteSpace(searchValue))
-            {
-                switch (searchField)
-                {
-                    case 1:
-                        errors = _errorRepository.SearchByApplicationLayerName(errors, searchValue);
-                        break;
-                    case 2:
-                        errors = _errorRepository.SearchByLanguageName(errors, searchValue);
-                        break;
-                    case 3:
-                        errors = _errorRepository.SearchByLevelName(errors, searchValue);
-                        break;
-                    case 4:
-                        errors = _errorRepository.SearchByOrigin(errors, searchValue);
-                        break;
-                    case 5:
-                        errors = _errorRepository.SearchByTitle(errors, searchValue);
-                        break;
-                }
-            }
+            errors = _searchHelper.SearchErrors(errors, searchValue, searchField);
 
             var errorsDto = _mapper.Map<IEnumerable<ErrorDTO>>(errors);
             return Ok(errorsDto);

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CentralErros.API.Controllers
 {
-    [Produces("application/json")]
+    [Produces("apllication/json")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Bearer")]
