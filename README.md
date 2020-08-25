@@ -46,7 +46,7 @@ A arquitetura do projeto é formada por:
 
 O projeto foi dividido em camadas de modo a adaptar a Clean Architecture a ele.
 
-!["Estrutura do projeto"](https://github.com/andersonmendrot/central-erros-codenation/blob/master/diagrama_projeto.png)
+!["Estrutura do projeto"](https://github.com/andersonmendrot/central-erros-codenation/blob/master/projeto_diagrama.png)
 
 
 
