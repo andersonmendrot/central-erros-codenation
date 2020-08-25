@@ -16,38 +16,8 @@ namespace CentralErros.Infrastructure.Repositories
         public void ChangeStatus(Error error)
         {
             error.Status = error.Status == 'y' ? 'n' : 'y';
-            //var attachedEntry = _context.Entry(error);
-            //attachedEntry.CurrentValues.SetValues(error);
             _context.Update(error);
             _context.SaveChanges();
-        }
-
-        public List<Error> FindByApplicationLayerId(int applicationLayerId)
-        {
-            return _context.Errors.
-                Where(x => x.ApplicationLayerId == applicationLayerId).
-                ToList();
-        }
-
-        public List<Error> FindByEnvironmentId(int environmentId)
-        {
-            return _context.Errors.
-                Where(x => x.EnvironmentId == environmentId).
-                ToList();
-        }
-
-        public List<Error> FindByLanguageId(int languageId)
-        {
-            return _context.Errors.
-                Where(x => x.LanguageId == languageId).
-                ToList();
-        }
-
-        public List<Error> FindByLevelId(int levelId)
-        {
-            return _context.Errors.
-                Where(x => x.LevelId == levelId).
-                ToList();
         }
 
         public List<Error> FindByStatus(char status)
@@ -111,14 +81,6 @@ namespace CentralErros.Infrastructure.Repositories
             var attachedEntry = _context.Entry(error);
             attachedEntry.CurrentValues.SetValues(error);
             _context.SaveChanges();
-        }
-
-        public List<Error> LimitResultNumber(List<Error> errors, int limit)
-        {
-            if (errors.Count <= limit)
-                return errors;
-
-            return errors.Take(limit).ToList();
         }
 
         public List<Error> SearchByApplicationLayerName(List<Error> errorList, string applicationLayerName)

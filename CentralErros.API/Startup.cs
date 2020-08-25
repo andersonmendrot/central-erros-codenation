@@ -137,10 +137,6 @@ namespace CentralErros.API
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             },
-                            /*/*Scheme = "oauth2",
-                            Name = "Bearer",
-                            Scheme= "bearer",
-                            In = ParameterLocation.Header,*/
                         },
                         new List<string>()
                     }
